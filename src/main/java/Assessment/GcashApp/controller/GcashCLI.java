@@ -1,5 +1,6 @@
 package Assessment.GcashApp.controller;
 
+import Assessment.GcashApp.service.CheckBalance;
 import Assessment.GcashApp.service.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +13,8 @@ public class GcashCLI implements CommandLineRunner {
 
     @Autowired
     private UserAuthentication auth;
-
+    @Autowired
+    private CheckBalance checkBalance;
     @Override
     public void run(String... args) {
 
@@ -71,7 +73,8 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("\n===== USER ACCOUNT =====");
                 System.out.println("Welcome: " + auth.getLoggedInUser().getName());
                 System.out.println("1. Change PIN");
-                System.out.println("2. Logout");
+                System.out.println("2. Check Balance");
+                System.out.println("3. Logout");
                 System.out.print("Choose: ");
 
                 if (!sc.hasNextInt()) {
@@ -83,7 +86,7 @@ public class GcashCLI implements CommandLineRunner {
                 int choice = sc.nextInt();
                 sc.nextLine();
 
-                if (choice < 1 || choice > 2) {
+                if (choice < 1 || choice > 3) {
                     System.out.println("Choice must be between 1 to 2.");
                     continue;
                 }
@@ -93,8 +96,11 @@ public class GcashCLI implements CommandLineRunner {
                     case 1:
                         changePin(sc);
                         break;
-
                     case 2:
+                        System.out.println(checkBalance.checkBalance(auth.getLoggedInUser()));
+                        break;
+
+                    case 3:
                         System.out.println(auth.logout());
                         break;
                 }

@@ -1,7 +1,9 @@
 package Assessment.GcashApp.service;
 
+import Assessment.GcashApp.model.Balance;
 import Assessment.GcashApp.model.User;
 import Assessment.GcashApp.repository.UserRepository;
+import Assessment.GcashApp.repository.BalanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,8 @@ public class UserAuthentication {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private BalanceRepository balanceRepository;
     private User loggedInUser;
 
     // ================= REGISTER =================
@@ -39,8 +42,13 @@ public class UserAuthentication {
         }
 
         User user = new User(name, email, number, pin);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
+        Balance balance = new Balance();
+        balance.setAmount(0.0);
+        balance.setUser(savedUser);
+
+        balanceRepository.save(balance);
         return "Registration successful";
     }
 
