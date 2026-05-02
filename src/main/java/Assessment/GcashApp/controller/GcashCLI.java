@@ -4,6 +4,7 @@ import Assessment.GcashApp.service.CashTransfer;
 import Assessment.GcashApp.service.CheckBalance;
 import Assessment.GcashApp.service.UserAuthentication;
 import Assessment.GcashApp.service.Cashin;
+import Assessment.GcashApp.service.Transactions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class GcashCLI implements CommandLineRunner {
     private Cashin cashin;
     @Autowired
     private CashTransfer cashTransfer;
+    @Autowired
+    private Transactions transactions;
     @Override
     public void run(String... args) {
 
@@ -82,7 +85,9 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("2. Check Balance");
                 System.out.println("3. Cash In");
                 System.out.println("4. Cash Transfer");
-                System.out.println("5. Logout");
+                System.out.println("5. My Transactions");
+                System.out.println("6. View Transaction by ID");
+                System.out.println("7. Logout");
                 System.out.print("Choose: ");
 
                 if (!sc.hasNextInt()) {
@@ -94,7 +99,7 @@ public class GcashCLI implements CommandLineRunner {
                 int choice = sc.nextInt();
                 sc.nextLine();
 
-                if (choice < 1 || choice > 5) {
+                if (choice < 1 || choice > 7) {
                     System.out.println("Choice must be between 1 to 4.");
                     continue;
                 }
@@ -155,6 +160,39 @@ public class GcashCLI implements CommandLineRunner {
                         );
                         break;
                     case 5:
+                        System.out.println(
+                                transactions.viewUserAll(
+                                        auth.getLoggedInUser().getId()
+                                )
+                        );
+                        break;
+
+                    case 6:
+                        // ================= SHOW USER AVAILABLE TRANSACTION IDS =================
+                        System.out.println("Your Available Transaction IDs:");
+                        System.out.println(
+                                transactions.viewUserAll(
+                                        auth.getLoggedInUser().getId()
+                                )
+                        );
+
+                        System.out.print("\nEnter Transaction ID: ");
+
+                        if (!sc.hasNextLong()) {
+                            System.out.println("Invalid input. Numbers only.");
+                            sc.nextLine();
+                            break;
+                        }
+
+                        long txId = sc.nextLong();
+                        sc.nextLine();
+
+                        System.out.println(
+                                transactions.viewTransaction(txId)
+                        );
+                        break;
+
+                    case 7:
                         System.out.println(auth.logout());
                         break;
                 }

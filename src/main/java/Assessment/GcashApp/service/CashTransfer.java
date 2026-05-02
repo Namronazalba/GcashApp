@@ -100,6 +100,8 @@ public class CashTransfer {
         tx.setDate(LocalDateTime.now());
         tx.setTransferFromId(sender.getId());
         tx.setTransferToId(receiver.getId());
+        tx.setTransferToEmail(receiver.getEmail());
+        tx.setTransferFromEmail(sender.getEmail());
 
         transactionRepository.save(tx);
 
