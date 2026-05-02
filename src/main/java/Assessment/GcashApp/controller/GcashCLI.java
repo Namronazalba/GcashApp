@@ -30,8 +30,19 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("4. Exit");
                 System.out.print("Choose: ");
 
+                if (!sc.hasNextInt()) {
+                    System.out.println("Invalid input. Numbers only.");
+                    sc.nextLine();
+                    continue;
+                }
+
                 int choice = sc.nextInt();
                 sc.nextLine();
+
+                if (choice < 1 || choice > 4) {
+                    System.out.println("Choice must be between 1 to 4.");
+                    continue;
+                }
 
                 switch (choice) {
 
@@ -51,9 +62,6 @@ public class GcashCLI implements CommandLineRunner {
                         System.out.println("Exiting App...");
                         System.exit(0);
                         break;
-
-                    default:
-                        System.out.println("Invalid choice.");
                 }
             }
 
@@ -63,12 +71,22 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("\n===== USER ACCOUNT =====");
                 System.out.println("Welcome: " + auth.getLoggedInUser().getName());
                 System.out.println("1. Change PIN");
-                System.out.println("2. View Current User");
-                System.out.println("3. Logout");
+                System.out.println("2. Logout");
                 System.out.print("Choose: ");
+
+                if (!sc.hasNextInt()) {
+                    System.out.println("Invalid input. Numbers only.");
+                    sc.nextLine();
+                    continue;
+                }
 
                 int choice = sc.nextInt();
                 sc.nextLine();
+
+                if (choice < 1 || choice > 2) {
+                    System.out.println("Choice must be between 1 to 2.");
+                    continue;
+                }
 
                 switch (choice) {
 
@@ -77,15 +95,8 @@ public class GcashCLI implements CommandLineRunner {
                         break;
 
                     case 2:
-                        currentUser();
-                        break;
-
-                    case 3:
                         System.out.println(auth.logout());
                         break;
-
-                    default:
-                        System.out.println("Invalid choice.");
                 }
             }
         }
@@ -146,14 +157,5 @@ public class GcashCLI implements CommandLineRunner {
         String newPin = sc.nextLine();
 
         System.out.println(auth.changePin(oldPin, newPin));
-    }
-
-    // ================= CURRENT USER =================
-    private void currentUser() {
-
-        System.out.println("User ID: " + auth.getLoggedInUser().getId());
-        System.out.println("Name: " + auth.getLoggedInUser().getName());
-        System.out.println("Email: " + auth.getLoggedInUser().getEmail());
-        System.out.println("Number: " + auth.getLoggedInUser().getNumber());
     }
 }

@@ -56,7 +56,7 @@ public class UserAuthentication {
         User user = optionalUser.get();
 
         if (!user.getPin().equals(pin)) {
-            return "Incorrect PIN";
+            return "Incorrect email or PIN";
         }
 
         loggedInUser = user;
