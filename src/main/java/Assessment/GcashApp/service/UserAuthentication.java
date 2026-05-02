@@ -26,8 +26,8 @@ public class UserAuthentication {
             return "Invalid email";
         }
 
-        if (number == null || number.length() < 11) {
-            return "Invalid number";
+        if (number == null || !number.matches("\\d{11}")) {
+            return "Number must be exactly 11 digits";
         }
 
         if (pin == null || pin.length() != 4) {
