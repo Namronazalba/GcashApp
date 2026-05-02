@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CheckBalance {
 
     @Autowired
-    private BalanceRepository ballanceRepository;
+    private BalanceRepository balanceRepository;
 
     // ================= CHECK BALANCE =================
     public String checkBalance(User user) {
@@ -21,13 +21,13 @@ public class CheckBalance {
             return "No user logged in";
         }
 
-        Optional<Balance> balance = ballanceRepository.findByUser(user);
+        Optional<Balance> balance = balanceRepository.findByUser(user);
 
         if (balance.isEmpty()) {
             return "No balance found for this user";
         }
         DecimalFormat df = new DecimalFormat("#,##0.00");
-//        return "Current Balance: " + balance.get().getAmount();
+
         return "Current Balance: ₱" + df.format(balance.get().getAmount());
     }
 }
