@@ -2,6 +2,7 @@ package Assessment.GcashApp.controller;
 
 import Assessment.GcashApp.service.CheckBalance;
 import Assessment.GcashApp.service.UserAuthentication;
+import Assessment.GcashApp.service.Cashin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ public class GcashCLI implements CommandLineRunner {
     private UserAuthentication auth;
     @Autowired
     private CheckBalance checkBalance;
+    @Autowired
+    private Cashin cashin;
     @Override
     public void run(String... args) {
 
@@ -74,7 +77,8 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("Welcome: " + auth.getLoggedInUser().getName());
                 System.out.println("1. Change PIN");
                 System.out.println("2. Check Balance");
-                System.out.println("3. Logout");
+                System.out.println("3. Cash In");
+                System.out.println("4. Logout");
                 System.out.print("Choose: ");
 
                 if (!sc.hasNextInt()) {
@@ -86,8 +90,8 @@ public class GcashCLI implements CommandLineRunner {
                 int choice = sc.nextInt();
                 sc.nextLine();
 
-                if (choice < 1 || choice > 3) {
-                    System.out.println("Choice must be between 1 to 2.");
+                if (choice < 1 || choice > 4) {
+                    System.out.println("Choice must be between 1 to 4.");
                     continue;
                 }
 
@@ -99,8 +103,22 @@ public class GcashCLI implements CommandLineRunner {
                     case 2:
                         System.out.println(checkBalance.checkBalance(auth.getLoggedInUser()));
                         break;
-
                     case 3:
+                        System.out.print("Enter amount to cash in: ");
+
+                        if (!sc.hasNextDouble()) {
+                            System.out.println("Invalid input. Numbers only.");
+                            sc.nextLine();
+                            continue;
+                        }
+
+                        double amount = sc.nextDouble();
+                        sc.nextLine();
+
+                        System.out.println(cashin.cashIn(auth.getLoggedInUser(), amount));
+                        break;
+
+                    case 4:
                         System.out.println(auth.logout());
                         break;
                 }
