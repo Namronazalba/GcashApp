@@ -196,6 +196,15 @@ public class GcashCLI implements CommandLineRunner {
                         System.out.println(auth.logout());
                         break;
                 }
+                if (auth.getLoggedInUser() != null) {
+
+                    System.out.print("\nDo you want another transaction? (y/n): ");
+                    String again = sc.nextLine();
+
+                    if (again.equalsIgnoreCase("n")) {
+                        System.out.println(auth.logout());
+                    }
+                }
             }
         }
     }
