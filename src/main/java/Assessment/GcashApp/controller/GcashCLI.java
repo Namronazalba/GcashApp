@@ -1,5 +1,6 @@
 package Assessment.GcashApp.controller;
 
+import Assessment.GcashApp.service.CashTransfer;
 import Assessment.GcashApp.service.CheckBalance;
 import Assessment.GcashApp.service.UserAuthentication;
 import Assessment.GcashApp.service.Cashin;
@@ -18,6 +19,8 @@ public class GcashCLI implements CommandLineRunner {
     private CheckBalance checkBalance;
     @Autowired
     private Cashin cashin;
+    @Autowired
+    private CashTransfer cashTransfer;
     @Override
     public void run(String... args) {
 
@@ -78,7 +81,8 @@ public class GcashCLI implements CommandLineRunner {
                 System.out.println("1. Change PIN");
                 System.out.println("2. Check Balance");
                 System.out.println("3. Cash In");
-                System.out.println("4. Logout");
+                System.out.println("4. Cash Transfer");
+                System.out.println("5. Logout");
                 System.out.print("Choose: ");
 
                 if (!sc.hasNextInt()) {
@@ -90,7 +94,7 @@ public class GcashCLI implements CommandLineRunner {
                 int choice = sc.nextInt();
                 sc.nextLine();
 
-                if (choice < 1 || choice > 4) {
+                if (choice < 1 || choice > 5) {
                     System.out.println("Choice must be between 1 to 4.");
                     continue;
                 }
@@ -117,8 +121,40 @@ public class GcashCLI implements CommandLineRunner {
 
                         System.out.println(cashin.cashIn(auth.getLoggedInUser(), amount));
                         break;
-
                     case 4:
+                        System.out.print("Enter Receiver Email: ");
+                        String receiverEmail = sc.nextLine();
+
+                        if (receiverEmail == null || receiverEmail.isBlank()) {
+                            System.out.println("Email is required.");
+                            break;
+                        }
+
+                        if (!receiverEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                            System.out.println("Invalid email format.");
+                            break;
+                        }
+
+                        System.out.print("Enter Amount to Transfer: ");
+
+                        if (!sc.hasNextDouble()) {
+                            System.out.println("Invalid input. Numbers only.");
+                            sc.nextLine();
+                            continue;
+                        }
+
+                        double transferAmount = sc.nextDouble();
+                        sc.nextLine();
+
+                        System.out.println(
+                                cashTransfer.cashTransfer(
+                                        auth.getLoggedInUser(),
+                                        receiverEmail,
+                                        transferAmount
+                                )
+                        );
+                        break;
+                    case 5:
                         System.out.println(auth.logout());
                         break;
                 }
