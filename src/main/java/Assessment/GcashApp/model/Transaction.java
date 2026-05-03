@@ -21,9 +21,6 @@ public class Transaction {
     private Long transferToId;
     private Long transferFromId;
 
-    private String transferToEmail;
-
-    private String transferFromEmail;
 
     // getters & setters
 
@@ -47,14 +44,5 @@ public class Transaction {
     public Long getTransferFromId() { return transferFromId; }
     public void setTransferFromId(Long transferFromId) { this.transferFromId = transferFromId; }
 
-    public String getTransferToEmail() { return transferToEmail;}
-    public void setTransferToEmail(String transferToEmail) {
-        this.transferToEmail = transferToEmail;
-    }
-    public String getTransferFromEmail() {
-        return transferFromEmail;
-    }
-    public void setTransferFromEmail(String transferFromEmail) {
-        this.transferFromEmail = transferFromEmail;
-    }
+
 }

@@ -8,9 +8,9 @@ import Assessment.GcashApp.service.Transactions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
+import org.springframework.context.annotation.Profile;
 import java.util.Scanner;
-
+@Profile("!test")
 @Component
 public class GcashCLI implements CommandLineRunner {
 
